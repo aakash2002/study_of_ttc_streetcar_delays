@@ -57,7 +57,7 @@ ggplot(grp_data, aes(x = factor(line), y = average_delay)) +
   geom_text(aes(label = round(average_delay, 2)), 
             vjust = -0.5,  # Position the text above the bar
             size = 2) +  # Adjust the size of the text
-  ggtitle("Bar plot of average delay in minutes by line") +
+  ggtitle("Average delay in minutes by streetcar line") +
   xlab("Streetcar Line") +
   ylab("Average Delay in Minutes") +
   theme_minimal() + 
@@ -70,8 +70,7 @@ ggplot(grp_data, aes(x = factor(line), y = average_delay)) +
 
 The 500-series lines are the daytime lines that run from 8 AM. These buses average between 6 to 23.6 minutes with the longest delay experienced by line 507.
 
-## Average Delay By Working Shift
-### Delays During Dayshift
+## Average Delays During Dayshift
 ```{r}
 #| label: fig-delay-dayshift
 #| fig-cap: Average delay in minutes for dayshift
@@ -79,11 +78,11 @@ The 500-series lines are the daytime lines that run from 8 AM. These buses avera
 #| warning: false
 #| message: false
 
-# Filter the data for times between 08:00 and 18:00 i.e day shift
+# Filter the data for times between 08:00 and 01:00 i.e day shift
 avg_delay_day_shift <- data |> 
   group_by(hour) |>
   summarise(average_delay = mean(min_delay), .groups = 'drop') |>
-  filter(hour >= "08" & hour <= "18")
+  filter(hour >= "08" | hour <= "01")
 
 ggplot(avg_delay_day_shift, aes(x = hour, y = average_delay)) +
   geom_line(color = "red", size = 1) +
@@ -100,10 +99,10 @@ ggplot(avg_delay_day_shift, aes(x = hour, y = average_delay)) +
     axis.text.x = element_text(angle = 45, hjust = 1)  # Rotate x-axis labels for clarity
   )
 ```
-
 @fig-delay-dayshift highlights the annual average delay in minutes experienced by the hour of day for streetcars that run during the day. We observe that there is high variability in the delays throughout the day with the minimum delay being about 13.78 minutes and the maximum being roughly 20 minutes.
 
-### Delays During Nightshift
+
+## Average Delays During Nightshift
 ```{r}
 #| label: fig-delay-nightshift
 #| fig-cap: Average delay in minutes for nightshift
@@ -111,17 +110,11 @@ ggplot(avg_delay_day_shift, aes(x = hour, y = average_delay)) +
 #| warning: false
 #| message: false
 
-# Filter the data for times between 19:00 and 00:00 i.e night shift
+# Filter the data for times between 02:00 and 07:00 i.e night shift
 avg_delay_night_shift <- data |> 
   group_by(hour) |>
-  summarise(average_delay = mean(min_delay), .groups = 'drop') |>
-  filter(hour >= "19" | hour <= "01")
-
-# Specify the desired order for the hours (military time format)
-hour_order <- c("17", "18", "19", "20", "21", "22", "23", "00", "01")
-
-# Convert the 'hour' column to a factor with the specified order
-avg_delay_night_shift$hour <- factor(avg_delay_night_shift$hour, levels = hour_order)
+  filter(hour >= "02" & hour <= "07") |>
+  summarise(average_delay = mean(min_delay), .groups = 'drop')
 
 # Plot the graph with the reordered x-axis
 ggplot(avg_delay_night_shift, aes(x = hour, y = average_delay)) +
@@ -139,8 +132,8 @@ ggplot(avg_delay_night_shift, aes(x = hour, y = average_delay)) +
     axis.text.x = element_text(angle = 45, hjust = 1)  # Rotate x-axis labels for clarity
   )
 ```
+@fig-delay-nightshift highlights the annual average delay in minutes experienced by the hour of day for streetcars that run during the night. We observe that there is decreasing trend in the delays throughout the night after 3 AM with the minimum delay being about 14 minutes and the maximum roughly 27 minutes.
 
-@fig-delay-nightshift highlights the annual average delay in minutes experienced by the hour of day for streetcars that run during the night We observe that there is low variability in the delays throughout the night with the minimum delay being about 16.62 minutes and the maximum roughly 20 minutes.
 
 ## Frequency of delays by incidents
 ```{r}
@@ -168,11 +161,11 @@ ggplot(freq_incidence, aes(x = incident, y = frequency)) +
     axis.text.x = element_text(angle = 45, hjust = 1)  # Rotate x-axis labels for clarity
   )
 ```
+@fig-freq-delay-incidents highlights the total annual delays incurred based on incidents reported by TTC for the reason. We can see for the year of 2023, operation delays were the most frequently occurring including a total of 2463 instances and rail switches were the least occuring with reported instances being only about 20.
 
-
-
+## Delay by Seasons
 ```{r}
-#| label: fig-min-delay-by-season
+#| label: fig-delay-by-season
 #| fig-cap: Average delay in minutes by seasons in a yea
 #| echo: false
 #| warning: false
@@ -194,13 +187,18 @@ ggplot(delay_by_season, aes(x = season, y = average_delay)) +
   )
 ```
 
+@fig-delay-by-season highlights the annual average delay in minutes based on the seasons. We observe that were isn't as much variation between the streetcar delays between the fall, spring, summer and winter months with each averaging around 16 minutes delay.
+
 # Discussion {#discussion}
+The above analysis provide valuable information regarding causes for TTC streetcar delays. Let us take a closer look into each of these.
+## Delays by bus lines
+The results from @fig-delay-by-line shows that blue-network (night shift) buses incur the highest average delay. This result makes sense as compared to the day shift buses, there are far fewer night shift buses resulting in fewer drivers for various locations the buses may take. Additionally, we also note that the 900-series streetcar line that go to the Airport incur the longest average delay of almost 54 minutes.
 
-## First discussion point {#sec-first-point}
+## Average delay for morning shift
+The results from @fig-delay-dayshift showcases the variability in average delays by the hour during the morning shift working hours observed between 8 AM to 6 PM. We observe that the results are in-line with the expected behavior of longer average delays of around 18 minutes during peak hours like 8 AM or 5 PM which is usually when a large working population leave and return from work. This can result in higher traffic hours on average causing an expected delay in streetcar arrivals. Additionally, we notice that throughout the day there are several points of interest for peak delays as seen at 11 AM or 1 PM incurring an average delay of 19 minutes. This observation could indicate the need for travel to various locations like grocery stores, perhaps to a friend's house or classes for university students. During these hours, there is heavy traffic and these suggest a potential reason for delays.
 
-If my paper were 10 pages, then should be be at least 2.5 pages. The discussion is a chance to show off what you know and what you learnt from all this. 
-
-## Second discussion point
+## Average delay for night shift
+The results from @fig-delay-nightshift shows a decreasing trend in the average delays by the hour during the night shift working hours observed between 2 AM to 7 AM. These findings are what we might expect as there is fewer traffic delays during the night resulting in a more consistent decreasing delay pattern. A possible reason for longer delay duration despite fewer traffic could be the fact there there are far fewer blue-network (night shift) buses that run resulting in fewer drivers that require to cover longer distances. The graph shows that as we get later into the night shift (i.e early morning) we notice the delays dropping as low as roughly 14 minutes.
 
 ## Third discussion point
 
