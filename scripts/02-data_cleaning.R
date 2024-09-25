@@ -20,11 +20,23 @@ cleaned_data <-
   separate(col = date,
            into = c("year", "month"),
            sep = "-") |>
-  tidyr::drop_na() |>
+  separate(col = time,
+           into = c("hour", "minute"),
+           sep = ":") |>
+  mutate(season = case_when(
+    month %in% c("03", "04", "05") ~ "Spring",  # March, April, May
+    month %in% c("06", "07", "08") ~ "Summer",  # June, July, August
+    month %in% c("09", "10", "11") ~ "Fall",     # September, October, November
+    month %in% c("12", "01", "02") ~ "Winter"    # December, January, February
+  )) |>
+  drop_na() |>  # Ensure drop_na() is applied to the cleaned_data
   filter(min_delay != 0) |>
   filter(min_gap != 0) |>
-  mutate(time = substr(time, 1, 5)) |>
-  select(year, month, day, location, incident, min_delay, line)
+  select(year, month, hour, minute, incident, min_delay, line, season)
+
+# Since the delay time for some dates are over many hours, we will restrict
+# ourselves to at most 2 hour delays in our study
+cleaned_data <- cleaned_data |> filter(min_delay < 121)
 
 # Check if any column contains NA data or not
 any(is.na(cleaned_data))

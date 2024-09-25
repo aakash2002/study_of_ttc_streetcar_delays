@@ -19,6 +19,8 @@ end_date <- as.Date("2023-12-31")
 
 # Set the number of random dates you want to generate
 number_of_dates <- 100
+from_stations <- c("Finch", "Sheppard Yongue", "Lawrence Station", "Bloor Station")
+to_stations <- c("St George Station", "Union Station", "Queen Station", "Dundas West", "Museum")
 
 data <-
   tibble(
@@ -35,13 +37,13 @@ data <-
       c("Traffic", "Emergency", "Weather", "Route Change"), 
       size = number_of_dates, replace = TRUE
       ),
-    from_station = sample(
-      c("Finch", "Sheppard Yongue", "Lawrence Station", "Bloor Station"), 
-      size = number_of_dates, replace = TRUE
+    from_station = sample(from_stations, 
+                          size = number_of_dates, 
+                          replace = TRUE
     ),
-    to_station = sample(
-      c("St George Station", "Union Station", "Queen Station", "Dundas West", "Museum"), 
-      size = number_of_dates, replace = TRUE
+    to_station = sample(to_stations, 
+                        size = number_of_dates, 
+                        replace = TRUE
     ),
   )
 
