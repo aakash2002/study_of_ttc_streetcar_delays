@@ -1,5 +1,6 @@
 ---
 title: "Annual Analysis of Delays in TTC Streetcars for the year 2023"
+subtitle: "Is there a way to make commuter life easier?"
 author: 
   - Aakash Vaithyanathan
 thanks: "Code and data are available at: https://github.com/aakash2002/study_of_ttc_streetcar_delays"
@@ -25,16 +26,18 @@ data <- read_csv(here::here("data/analysis_data/cleaned_ttc_streetcar_delay_2023
 
 # Introduction
 
-You can and should cross-reference sections and sub-sections. We use @citeR and @rohan.
+Toronto Transit Commission (TTC) is the biggest and most used transit authority in Toronto. It was established on September 1, 1921 and since then supports various means of ground transportation like streetcar, shuttle bus and the subway system. Despite being the most used transit system, it does come with several challenges one of the most notable one being the delays experienced between the various stops. One such transportation system we focus on in this paper is streetcars.
 
-The remainder of this paper is structured as follows. @sec-data....
+These delays make it especially difficult for individuals that commute on a daily basis. Furthermore, one can image the inconveniences caused due to extended delays by streetcars during weather conditions like the winter months. In this paper, we aim to dive deeper into the cause of delays in TTC, how these vary by the times of day and the various seasons and what incidents are the most occurring for the delays experienced. We make use of the dataset made available by @opendatatoronto for the year 2023.
 
+The remainder of this paper is structured as follows. We first give a brief overview of the dataset under @dataset-desc. Then, we present some graphs on the results extracted from our collected data found under @results. Lastly, we conclude with a discussion of our results and any limitations in our approach found under @discussion.
 
+# Dataset Description {#dataset-desc}
 
-# Data {#sec-data}
+bla bla bla
 
-Some of our data is of penguins (@fig-bills), from @palmerpenguins.
-
+# Results {#results}
+## Average Delay By Streetcar Line
 ```{r}
 #| include: true
 #| warning: false
@@ -63,34 +66,50 @@ ggplot(grp_data, aes(x = factor(line), y = average_delay)) +
 
 ```
 
-Talk more about it.
+@fig-delay-by-line highlights the annual average delay in minutes for every streetcar line for the year 2023. The 300-series lines also called the Blue Network Lines (cite) are the nighttime streetcar lines that start at 1:30 AM. These buses average the most delays reaching at most 30 minutes for line 312.
 
-And also planes (@fig-planes). (You can change the height and width, but don't worry about doing that until you have finished every other aspect of the paper - Quarto will try to make it look nice and the defaults usually work well once you have enough text.)
+The 500-series lines are the daytime lines that run from 8 AM. These buses average between 6 to 23.6 minutes with the longest delay experienced by line 507.
 
+## Average Delay By Working Shift
+### Delays During Dayshift
 ```{r}
-#| label: fig-delay-for-day-shift
-#| fig-cap: Average delay in minutes day shift
+#| label: fig-delay-dayshift
+#| fig-cap: Average delay in minutes for dayshift
 #| echo: false
 #| warning: false
 #| message: false
 
-# Filter the data for times between 06:00 and 18:00 i.e day shift
+# Filter the data for times between 08:00 and 18:00 i.e day shift
 avg_delay_day_shift <- data |> 
   group_by(hour) |>
   summarise(average_delay = mean(min_delay), .groups = 'drop') |>
-  filter(hour > "06" & hour < "19")
+  filter(hour >= "08" & hour <= "18")
 
-dayshift <- ggplot(avg_delay_day_shift, aes(x = hour, y = average_delay)) +
-    geom_line(color = "red", size = 1) +
-    geom_point(color = "blue", size = 2) +
-    ggtitle("Average delay in minutes for morning shift") +
-    xlab("Hour of Day") +
-    ylab("Average Delay (Minutes)") +
-    theme_minimal() +
-    theme(
-      plot.title = element_text(hjust = 0.5),
-      axis.text.x = element_text(angle = 45, hjust = 1)  # Rotate x-axis labels for clarity
-    )
+ggplot(avg_delay_day_shift, aes(x = hour, y = average_delay)) +
+  geom_line(color = "red", size = 1) +
+  geom_point(color = "blue", size = 2) +
+  geom_text(aes(label = round(average_delay, 2)), 
+            vjust = -1, 
+            size = 2) + 
+  ggtitle("Average delay in minutes for morning shift") +
+  xlab("Hour of Day") +
+  ylab("Average Delay (Minutes)") +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(hjust = 0.5),
+    axis.text.x = element_text(angle = 45, hjust = 1)  # Rotate x-axis labels for clarity
+  )
+```
+
+@fig-delay-dayshift highlights the annual average delay in minutes experienced by the hour of day for streetcars that run during the day. We observe that there is high variability in the delays throughout the day with the minimum delay being about 13.78 minutes and the maximum being roughly 20 minutes.
+
+### Delays During Nightshift
+```{r}
+#| label: fig-delay-nightshift
+#| fig-cap: Average delay in minutes for nightshift
+#| echo: false
+#| warning: false
+#| message: false
 
 # Filter the data for times between 19:00 and 00:00 i.e night shift
 avg_delay_night_shift <- data |> 
@@ -98,24 +117,32 @@ avg_delay_night_shift <- data |>
   summarise(average_delay = mean(min_delay), .groups = 'drop') |>
   filter(hour >= "19" | hour <= "01")
 
-nightshift <- ggplot(avg_delay_night_shift, aes(x = hour, y = average_delay)) +
-    geom_line(color = "blue", size = 1) +
-    geom_point(color = "red", size = 2) +
-    ggtitle("Average delay in minutes for night shift") +
-    xlab("Hour of Day") +
-    ylab("Average Delay (Minutes)") +
-    theme_minimal() +
-    theme(
-      plot.title = element_text(hjust = 0.5),
-      axis.text.x = element_text(angle = 45, hjust = 1)  # Rotate x-axis labels for clarity
-    )
+# Specify the desired order for the hours (military time format)
+hour_order <- c("17", "18", "19", "20", "21", "22", "23", "00", "01")
 
-dayshift
-nightshift
+# Convert the 'hour' column to a factor with the specified order
+avg_delay_night_shift$hour <- factor(avg_delay_night_shift$hour, levels = hour_order)
+
+# Plot the graph with the reordered x-axis
+ggplot(avg_delay_night_shift, aes(x = hour, y = average_delay)) +
+  geom_line(color = "blue", size = 1) +
+  geom_point(color = "red", size = 2) +
+  geom_text(aes(label = round(average_delay, 2)), 
+            vjust = -1, 
+            size = 2) + 
+  ggtitle("Average delay in minutes for night shift") +
+  xlab("Hour of Day") +
+  ylab("Average Delay (Minutes)") +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(hjust = 0.5),
+    axis.text.x = element_text(angle = 45, hjust = 1)  # Rotate x-axis labels for clarity
+  )
 ```
 
-Talk way more about it. 
+@fig-delay-nightshift highlights the annual average delay in minutes experienced by the hour of day for streetcars that run during the night We observe that there is low variability in the delays throughout the night with the minimum delay being about 16.62 minutes and the maximum roughly 20 minutes.
 
+## Frequency of delays by incidents
 ```{r}
 #| label: fig-freq-delay-incidents
 #| fig-cap: Frequency plot for cause of streetcar delay by incidents
@@ -167,7 +194,7 @@ ggplot(delay_by_season, aes(x = season, y = average_delay)) +
   )
 ```
 
-# Discussion
+# Discussion {#discussion}
 
 ## First discussion point {#sec-first-point}
 
