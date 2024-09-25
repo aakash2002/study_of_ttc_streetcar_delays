@@ -1,0 +1,101 @@
+dates,delay_mins,day,reason,from_station,to_station
+2023-09-16,12,Saturday,Emergency,Bloor Station,Queen Station
+2023-09-10,18,Sunday,Weather,Lawrence Station,Queen Station
+2023-09-27,24,Wednesday,Weather,Sheppard Yongue,Museum
+2023-02-16,33,Thursday,Route Change,Finch,Union Station
+2023-03-12,20,Sunday,Route Change,Sheppard Yongue,St George Station
+2023-01-19,19,Thursday,Traffic,Bloor Station,Museum
+2023-07-25,17,Tuesday,Traffic,Lawrence Station,St George Station
+2023-04-01,20,Saturday,Traffic,Bloor Station,St George Station
+2023-07-09,14,Sunday,Weather,Sheppard Yongue,Dundas West
+2023-04-30,25,Sunday,Emergency,Lawrence Station,Union Station
+2023-04-02,22,Sunday,Emergency,Sheppard Yongue,Queen Station
+2023-03-29,21,Wednesday,Traffic,Bloor Station,Union Station
+2023-09-06,24,Wednesday,Weather,Lawrence Station,St George Station
+2023-11-08,22,Wednesday,Weather,Finch,Queen Station
+2023-11-07,12,Tuesday,Emergency,Bloor Station,St George Station
+2023-12-08,21,Friday,Route Change,Finch,Dundas West
+2023-11-26,18,Sunday,Traffic,Bloor Station,Museum
+2023-06-20,19,Tuesday,Weather,Bloor Station,Union Station
+2023-07-12,23,Wednesday,Route Change,Lawrence Station,St George Station
+2023-06-07,29,Wednesday,Route Change,Finch,St George Station
+2023-06-01,21,Thursday,Weather,Sheppard Yongue,Union Station
+2023-11-01,17,Wednesday,Emergency,Finch,Queen Station
+2023-05-24,22,Wednesday,Emergency,Bloor Station,St George Station
+2023-01-16,20,Monday,Weather,Lawrence Station,Union Station
+2023-07-26,19,Wednesday,Emergency,Sheppard Yongue,Museum
+2023-10-06,22,Friday,Route Change,Sheppard Yongue,Museum
+2023-10-15,24,Sunday,Traffic,Finch,Union Station
+2023-08-10,20,Thursday,Emergency,Lawrence Station,Dundas West
+2023-09-27,17,Wednesday,Traffic,Sheppard Yongue,St George Station
+2023-12-17,17,Sunday,Traffic,Finch,Dundas West
+2023-01-26,16,Thursday,Emergency,Finch,Union Station
+2023-08-08,14,Tuesday,Traffic,Finch,Queen Station
+2023-10-01,17,Sunday,Route Change,Lawrence Station,St George Station
+2023-03-27,29,Monday,Weather,Lawrence Station,St George Station
+2023-02-15,17,Wednesday,Route Change,Lawrence Station,Dundas West
+2023-11-13,24,Monday,Route Change,Sheppard Yongue,Union Station
+2023-04-23,21,Sunday,Weather,Sheppard Yongue,St George Station
+2023-09-03,13,Sunday,Route Change,Bloor Station,St George Station
+2023-09-25,23,Monday,Route Change,Finch,Dundas West
+2023-11-25,26,Saturday,Route Change,Bloor Station,Dundas West
+2023-03-13,18,Monday,Traffic,Finch,Museum
+2023-07-21,32,Friday,Traffic,Bloor Station,Union Station
+2023-01-17,22,Tuesday,Route Change,Lawrence Station,Dundas West
+2023-08-19,25,Saturday,Emergency,Sheppard Yongue,Museum
+2023-02-04,12,Saturday,Traffic,Bloor Station,Museum
+2023-02-22,19,Wednesday,Weather,Lawrence Station,St George Station
+2023-07-08,17,Saturday,Weather,Finch,Queen Station
+2023-06-10,26,Saturday,Route Change,Finch,St George Station
+2023-11-11,24,Saturday,Emergency,Lawrence Station,Museum
+2023-04-30,13,Sunday,Weather,Sheppard Yongue,Museum
+2023-11-28,20,Tuesday,Weather,Bloor Station,Union Station
+2023-10-19,21,Thursday,Weather,Finch,Union Station
+2023-02-21,14,Tuesday,Route Change,Lawrence Station,Queen Station
+2023-07-18,17,Tuesday,Traffic,Finch,Dundas West
+2023-08-18,20,Friday,Weather,Lawrence Station,Union Station
+2023-02-21,14,Tuesday,Weather,Finch,Union Station
+2023-11-22,10,Wednesday,Emergency,Bloor Station,Queen Station
+2023-12-03,13,Sunday,Traffic,Lawrence Station,St George Station
+2023-06-15,24,Thursday,Weather,Sheppard Yongue,Union Station
+2023-08-03,28,Thursday,Traffic,Sheppard Yongue,Queen Station
+2023-09-16,28,Saturday,Route Change,Lawrence Station,Museum
+2023-02-26,27,Sunday,Weather,Lawrence Station,Dundas West
+2023-05-22,20,Monday,Traffic,Sheppard Yongue,Union Station
+2023-03-28,22,Tuesday,Emergency,Finch,Dundas West
+2023-05-07,18,Sunday,Weather,Bloor Station,Union Station
+2023-01-04,26,Wednesday,Weather,Sheppard Yongue,Union Station
+2023-05-08,13,Monday,Route Change,Bloor Station,Dundas West
+2023-12-10,25,Sunday,Weather,Bloor Station,Queen Station
+2023-09-02,16,Saturday,Weather,Lawrence Station,Dundas West
+2023-03-10,25,Friday,Emergency,Finch,Dundas West
+2023-05-08,22,Monday,Emergency,Finch,St George Station
+2023-11-21,23,Tuesday,Weather,Sheppard Yongue,Queen Station
+2023-02-13,18,Monday,Emergency,Lawrence Station,Union Station
+2023-09-23,21,Saturday,Route Change,Finch,St George Station
+2023-11-13,16,Monday,Route Change,Bloor Station,Museum
+2023-09-18,19,Monday,Route Change,Lawrence Station,Museum
+2023-06-26,18,Monday,Weather,Finch,St George Station
+2023-02-17,21,Friday,Route Change,Bloor Station,Museum
+2023-09-08,22,Friday,Traffic,Bloor Station,Union Station
+2023-02-25,17,Saturday,Traffic,Lawrence Station,Queen Station
+2023-07-25,20,Tuesday,Emergency,Lawrence Station,Dundas West
+2023-04-03,30,Monday,Emergency,Finch,St George Station
+2023-08-12,19,Saturday,Emergency,Sheppard Yongue,Dundas West
+2023-02-02,23,Thursday,Emergency,Bloor Station,Museum
+2023-05-10,23,Wednesday,Emergency,Bloor Station,Queen Station
+2023-07-09,21,Sunday,Emergency,Sheppard Yongue,Queen Station
+2023-02-25,25,Saturday,Emergency,Lawrence Station,Union Station
+2023-03-08,20,Wednesday,Traffic,Sheppard Yongue,Dundas West
+2023-11-08,19,Wednesday,Traffic,Finch,Union Station
+2023-08-07,23,Monday,Emergency,Bloor Station,Union Station
+2023-11-24,21,Friday,Emergency,Lawrence Station,Museum
+2023-10-31,22,Tuesday,Traffic,Bloor Station,St George Station
+2023-04-20,21,Thursday,Traffic,Lawrence Station,Museum
+2023-09-04,20,Monday,Traffic,Sheppard Yongue,St George Station
+2023-05-22,16,Monday,Traffic,Sheppard Yongue,Union Station
+2023-06-05,23,Monday,Route Change,Finch,Queen Station
+2023-10-13,25,Friday,Traffic,Sheppard Yongue,Union Station
+2023-12-30,11,Saturday,Emergency,Lawrence Station,Queen Station
+2023-09-07,29,Thursday,Traffic,Lawrence Station,Dundas West
+2023-12-06,25,Wednesday,Route Change,Lawrence Station,Union Station
