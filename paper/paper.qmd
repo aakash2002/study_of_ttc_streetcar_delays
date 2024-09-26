@@ -152,7 +152,7 @@ table_feature_datatypes |>
 # Grouping and summarizing the data
 grp_data <- data |> 
   group_by(line) |>
-  summarise(average_delay = mean(min_delay), .groups = 'drop')
+  summarise(average_delay = mean(min_delay))
 
 # Create the bar plot
 ggplot(grp_data, aes(x = factor(line), y = average_delay)) +
@@ -184,7 +184,7 @@ The 500-series lines are the daytime lines that run from 8 AM. These buses avera
 # Filter the data for times between 08:00 and 01:00 i.e day shift
 avg_delay_day_shift <- data |> 
   group_by(hour) |>
-  summarise(average_delay = mean(min_delay), .groups = 'drop') |>
+  summarise(average_delay = mean(min_delay)) |>
   filter(hour >= "08" | hour <= "01")
 
 ggplot(avg_delay_day_shift, aes(x = as.numeric(hour), y = average_delay)) +
@@ -217,7 +217,7 @@ ggplot(avg_delay_day_shift, aes(x = as.numeric(hour), y = average_delay)) +
 avg_delay_night_shift <- data |> 
   group_by(hour) |>
   filter(hour >= "02" & hour <= "07") |>
-  summarise(average_delay = mean(min_delay), .groups = 'drop')
+  summarise(average_delay = mean(min_delay))
 
 # Plot the graph with the reordered x-axis
 ggplot(avg_delay_night_shift, aes(x = as.numeric(hour), y = average_delay)) +
@@ -248,7 +248,7 @@ ggplot(avg_delay_night_shift, aes(x = as.numeric(hour), y = average_delay)) +
 
 freq_incidence <- data |> 
   group_by(incident) |> 
-  summarise(frequency = n(), .groups = 'drop')
+  summarise(frequency = n())
 
 # Calculate percentages
 freq_incidence$percentage <- freq_incidence$frequency / sum(freq_incidence$frequency) * 100
@@ -280,7 +280,7 @@ ggplot(freq_incidence, aes(x = incident, y = frequency)) +
 
 delay_by_season <- data |>
   group_by(season) |>
-  summarise(average_delay = mean(min_delay), .groups = 'drop')
+  summarise(average_delay = mean(min_delay))
 
 ggplot(delay_by_season, aes(x = season, y = average_delay)) +
   geom_bar(stat = "identity", fill = "dodgerblue1", alpha = 0.75) +
