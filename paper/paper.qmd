@@ -1,7 +1,7 @@
 ---
 title: "Annual Analysis of Delays in TTC Streetcars for the year 2023"
 subtitle: "Is there a way to make commuter life easier?"
-author: 
+author:
   - Aakash Vaithyanathan
 thanks: "Code and data are available at: https://github.com/aakash2002/study_of_ttc_streetcar_delays"
 date: today
@@ -13,7 +13,6 @@ format:
     fig-caption: true
 number-sections: true
 bibliography: references.bib
-link-citations: true
 ---
 
 ```{r}
@@ -24,6 +23,7 @@ link-citations: true
 library(tidyverse)
 library(ggplot2)
 library(gt)
+library(GGally)
 
 data <- read_csv(here::here("data/analysis_data/cleaned_ttc_streetcar_delay_2023.csv"))
 
@@ -45,14 +45,13 @@ table_styling <- function(gt_tbl) {
   }
 ```
 
-
 # Introduction
 
 Toronto Transit Commission (TTC) is the biggest and most used transit authority in Toronto. It was established on September 1, 1921 and since then supports various means of ground transportation like streetcar, shuttle bus and the subway system. Despite being the most used transit system, it does come with several challenges one of the most notable one being the delays experienced between the various stops. One such transportation system we focus on in this paper is streetcars.
 
-These delays make it especially difficult for individuals that commute on a daily basis. Furthermore, one can image the inconveniences caused due to extended delays by streetcars during weather conditions like the winter months. In this paper, we aim to dive deeper into the cause of delays in TTC, how these vary by the times of day and the various seasons and what incidents are the most occurring for the delays experienced. We make use R (@citeR) and the dataset made available by OpenData Toronto (@opendatatoronto) for the year 2023. The reported graphs in our study is generated using ggplot (@ggplot2) and the tables are generated using the gt (@gt) library. Code cleanup is performed using the Janitor (@janitor) package.
+These delays make it especially difficult for individuals that commute on a daily basis. Furthermore, one can image the inconveniences caused due to extended delays by streetcars during weather conditions like the winter months. In this paper, we aim to dive deeper into the cause of delays in TTC, how these vary by the times of day and the various seasons and what incidents are the most occurring for the delays experienced. In this paper, we make use R (@citeR) and its supported packages like tidyverse  (@tidyverse) and dplyr (@dplyr). For our dataset, we use the provided data for the year 2023 by OpenData Toronto (@opendatatoronto). The reported graphs in our study is generated using ggplot (@ggplot2) and the tables are generated using the gt (@gt) library. Code cleanup is performed using the Janitor (@janitor) package.
 
-The remainder of this paper is structured as follows. We first give a brief overview of the dataset under [datasetdesc] section. Then, we present some graphs on the results extracted from our collected data found under [results] section. Lastly, we conclude with a discussion of our results found under [discussion] section, highlight the limitations in our conducted study found under [limitations] section and propose possible future next steps for this project under [nextsteps] section.
+The remainder of this paper is structured as follows. We first give a brief overview of the dataset under [dataset description](#datasetdesc) section. Then, we present some graphs on the results extracted from our collected data found under [results](#results). We then proceed to a discussion of our results found under [discussion](#discussion) section and highlight the limitations in our conducted study found under [limitations](#limitations) section and end our study with some proposed [next steps](#nextsteps).
 
 # Dataset Description {#datasetdesc}
 
@@ -65,7 +64,7 @@ We observe that our dataset has several rows where the minimum delay time is ove
 ## Data preprocessing and cleaning
 The raw data is undergone a series of data cleaning steps to ensure adequate usability for the study. We first use the Janitor (@janitor) package to clean the data columns removing any spaces between them and using a consistent naming stype for them. Next, we proceed to split the date field into year and month fields and split the time field extracting the hour of day from it. Following this, we create a new column to denote the season based on the month of the year from the data. This helps during the analysis stage when we need to make inferences about the seasonal variation in average delays in streetcars. 
 
-We then proceed to drop the rows with missing values or NA. Out of the total 14413 rows of data, 2399 of them contain NA values in total which doesn't heavily impact our data. Therefore, no transformations are necessary to populate missing entries in our dataset. Lastly, as highlighed in the [assumption] section, we filter our dataset to only include delays of upto 120 minutes.
+We then proceed to drop the rows with missing values or NA. Out of the total 14413 rows of data, 2399 of them contain NA values in total which doesn't heavily impact our data. Therefore, no transformations are necessary to populate missing entries in our dataset. Lastly, as highlighed in the [assumption](#assumption) section, we filter our dataset to only include delays of upto 120 minutes.
 
 As a result of the above described data cleaning process, we select our desired features from the dataset. The following table shows the first five rows of our data and the selected features.
 
@@ -157,10 +156,10 @@ grp_data <- data |>
 
 # Create the bar plot
 ggplot(grp_data, aes(x = factor(line), y = average_delay)) +
-  geom_bar(stat = "identity", width = 0.7, fill = 'lightblue') +
-  geom_text(aes(label = round(average_delay, 2)), 
+  geom_bar(stat = "identity", width = 0.7, fill = 'dodgerblue1', alpha = 0.75) +
+  geom_text(aes(label = paste0(round(average_delay, 2))),
             vjust = -0.5,  # Position the text above the bar
-            size = 2) +  # Adjust the size of the text
+            size = 1.75) +  # Adjust the size of the text
   ggtitle("Average delay in minutes by streetcar line") +
   xlab("Streetcar Line") +
   ylab("Average Delay in Minutes") +
@@ -188,12 +187,12 @@ avg_delay_day_shift <- data |>
   summarise(average_delay = mean(min_delay), .groups = 'drop') |>
   filter(hour >= "08" | hour <= "01")
 
-ggplot(avg_delay_day_shift, aes(x = hour, y = average_delay)) +
-  geom_line(color = "red", size = 1) +
-  geom_point(color = "blue", size = 2) +
-  geom_text(aes(label = round(average_delay, 2)), 
-            vjust = -1, 
-            size = 2) + 
+ggplot(avg_delay_day_shift, aes(x = as.numeric(hour), y = average_delay)) +
+  geom_line(color = "dodgerblue1", size = 1, alpha = 0.5) +
+  geom_point(color = "dodgerblue4", size = 2) +
+  geom_text(aes(label = round(average_delay, 1)), 
+            nudge_y = 0.25, 
+            size = 1.75) + 
   ggtitle("Average delay in minutes for morning shift") +
   xlab("Hour of Day") +
   ylab("Average Delay (Minutes)") +
@@ -221,12 +220,12 @@ avg_delay_night_shift <- data |>
   summarise(average_delay = mean(min_delay), .groups = 'drop')
 
 # Plot the graph with the reordered x-axis
-ggplot(avg_delay_night_shift, aes(x = hour, y = average_delay)) +
-  geom_line(color = "blue", size = 1) +
-  geom_point(color = "red", size = 2) +
-  geom_text(aes(label = round(average_delay, 2)), 
-            vjust = -1, 
-            size = 2) + 
+ggplot(avg_delay_night_shift, aes(x = as.numeric(hour), y = average_delay)) +
+  geom_line(color = "red1", size = 1, alpha = 0.5) +
+  geom_point(color = "red3", size = 2) +
+  geom_text(aes(label = round(average_delay, 1)), 
+            vjust = 2.5, 
+            size = 1.75) + 
   ggtitle("Average delay in minutes for night shift") +
   xlab("Hour of Day") +
   ylab("Average Delay (Minutes)") +
@@ -251,26 +250,30 @@ freq_incidence <- data |>
   group_by(incident) |> 
   summarise(frequency = n(), .groups = 'drop')
 
+# Calculate percentages
+freq_incidence$percentage <- freq_incidence$frequency / sum(freq_incidence$frequency) * 100
+
+# Plot with percentage labels
 ggplot(freq_incidence, aes(x = incident, y = frequency)) +
-  geom_bar(stat = "identity", fill = "lightblue") +
-  geom_text(aes(label = frequency), 
-            vjust = -0.5,  # Position the text above the bar
-            size = 2) +  # Adjust the size of the text
-  ggtitle("Frequency of each delay incident in the year 2023") +
+  geom_bar(stat = "identity", fill = "dodgerblue1", alpha = 0.75) +
+  geom_text(aes(label = paste0(round(percentage, 1), "%")), 
+            vjust = -0.5,
+            size = 2) +
+  ggtitle("Frequency and percentage of incident types in 2023") +
   xlab("Delay Incident Type") +
   ylab("Frequency") +
   theme_minimal() +
   theme(
     plot.title = element_text(hjust = 0.5),  # Center title
-    axis.text.x = element_text(angle = 45, hjust = 1)  # Rotate x-axis labels for clarity
+    axis.text.x = element_text(angle = 45, hjust = 1, size = 7)  # Rotate x-axis labels for clarity
   )
 ```
-@fig-freq-delay-incidents highlights the total annual delays incurred based on incidents reported by TTC for the reason. We can see for the year of 2023, operation delays were the most frequently occurring including a total of 2463 instances and rail switches were the least occuring with reported instances being only about 20.
+@fig-freq-delay-incidents highlights the total annual delays incurred based on incidents reported by TTC for the reason. We can see for the year of 2023, 23% of delay incidents were due to operation delays amounting to a total of 2463 instances and rail switches were the least occurring with reported instances being only about 0.2% of all delays.
 
 ## Delay by Seasons
 ```{r}
 #| label: fig-delay-by-season
-#| fig-cap: Average delay in minutes by seasons in a yea
+#| fig-cap: Average delay in minutes by seasons in a year
 #| echo: false
 #| warning: false
 #| message: false
@@ -280,7 +283,10 @@ delay_by_season <- data |>
   summarise(average_delay = mean(min_delay), .groups = 'drop')
 
 ggplot(delay_by_season, aes(x = season, y = average_delay)) +
-  geom_bar(stat = "identity", fill = "lightblue") +
+  geom_bar(stat = "identity", fill = "dodgerblue1", alpha = 0.75) +
+  geom_text(aes(label = paste0(round(average_delay, 2))), 
+            vjust = -0.5,
+            size = 2) +
   ggtitle("Average delay in minutes by seasons in a year") +
   xlab("Type of Season") +
   ylab("Average delay in minutes") +
@@ -303,24 +309,24 @@ The results from @fig-delay-by-line shows that blue network routes (@ttcRoutesSc
 The results from @fig-delay-dayshift showcases the variability in average delays by the hour during the morning shift working hours observed between 8 AM to 6 PM. We observe that the results are in-line with the expected behavior of longer average delays of around 18 minutes during peak hours like 8 AM or 5 PM which is usually when a large working population leave and return from work. This can result in higher traffic hours on average causing an expected delay in streetcar arrivals. Additionally, we notice that throughout the day there are several points of interest for peak delays as seen at 11 AM or 1 PM incurring an average delay of 19 minutes. This observation could indicate the need for travel to various locations like grocery stores, perhaps to a friend's house or classes for university students. During these hours, there is heavy traffic and these suggest a potential reason for delays.
  
 ## Average delay for night shift
-The results from @fig-delay-nightshift shows a decreasing trend in the average delays by the hour during the night shift working hours observed between 2 AM to 7 AM. These findings are what we might expect as there is fewer traffic delays during the night resulting in a more consistent decreasing delay pattern. A possible reason for longer delay duration despite fewer traffic could be the fact there there are far fewer blue netwrok routes (@ttcRoutesSchedule) buses that run resulting in fewer drivers that require to cover longer distances. The graph shows that as we get later into the night shift (i.e early morning) we notice the delays dropping as low as roughly 14 minutes.
+The results from @fig-delay-nightshift shows a decreasing trend in the average delays by the hour during the night shift working hours observed between 2 AM to 7 AM. These findings are what we might expect as there is fewer traffic delays during the night resulting in a more consistent decreasing delay pattern. A possible reason for longer delay duration despite fewer traffic could be the fact there there are far fewer blue netwrok routes (@ttcRoutesSchedule) buses that run resulting in fewer drivers that require to cover longer distances. The graph shows that as we get later into the night shift, we notice the delays dropping as low as roughly 14 minutes.
 
 ## Annual frequency of reported delay incidents
 The results from @fig-freq-delay-incidents showcase the total count of instances of delays by various incident reports in the year 2023. The above bar graph shows that the most occurring incident was due to operational delays accounting for 2467 total reports. The least occurring incident was Rail switches accounting for only 21 total instance reports in the year.
 
 ## Annual delay in minutes by seasons in a year
-The results from @fig-delay-by-season show that on average there wasn't as much variability in delays between the various seasons in a year with summer month accounting for the longest reported average delays. Interestingly, the winter month accounted to the least average delays. This result is in-line with the existing literature regarding the weather reports in Canada during the winter season as for the first time in history, Toronto reported an average temperature above -5 degrees throughout the month of December and also reported a warmer winter season overall (@canadaWinterArticle).
+The results from @fig-delay-by-season show that on average there wasn't as much variability in delays between the various seasons in a year with summer month accounting for the longest reported average delays. Interestingly, the winter month accounted to the least average delays. This result is in-line with the existing literature regarding the weather reports in Canada during the winter season as for the first time in history, Toronto reported an average temperature above -5 degrees Celsius throughout the month of December and also reported a warmer winter season overall (@canadaWinterArticle).
 
 ## Conclusion
 By using the findings from @fig-delay-by-line, and @fig-delay-nightshift, we can conclude that there on average the night shift streetcars showcased the longest average delays with periods between 2 AM to 4 AM having the most delays. These findings support our understanding that there are far fewer night shift buses that operate on average compared to the number of streetcars that operate during the day's regular working hours. @fig-delay-dayshift reports that the day shift streetcars have their reported delays being high during peak hours like 8 AM, 11 AM, 1 PM, 5 PM or 8 PM. These results are in-line with the idea that hours between 9-5 are the general working hours in a day and likely can result in high traffic volumes for individuals and commuters.
 
-In addition to studying the variation in delays by the working shift, their hours of day and by streetcar lines, the study also aims to examine the causes of delays and whether there are any seasonal variations that may attribute to potential delays in TTC streetcars. The findings from @fig-freq-delay-incidents report that during the year 2023, operation delays were the most reported instances of delays of 2467. Furthermore, from @fig-delay-by-season, the study finds that for the year 2023 there weren't as much variability in average delays of streetcars between the seasons. This result makes sense as during the winter season due to the harsh weather conditions, there is expected operational delays between streetcar arrivals as seen by the article in 2015 that shows that 25 streetcars were knocked off route (@streetcarOffRoute).
+In addition to studying the variation in delays by the working shift, their hours of day and by streetcar lines, the study also aims to examine the causes of delays and whether there are any seasonal variations that may attribute to potential delays in TTC streetcars. The findings from @fig-freq-delay-incidents report that during the year 2023, operation delays were the most reported instances of delays of 2467. Furthermore, from @fig-delay-by-season, the study finds that for the year 2023 there weren't as much variability in average delays of streetcars between the seasons. This result makes sense as during the winter season due to the harsh weather conditions, there is expected operational delays between streetcar arrivals as seen by the article in 2015 that shows that 25 streetcars were knocked off route (@torontosunColdWeather).
 
 The results from our study highlight important considerations on the types of delay incidents that occur in streetcars, what time of day between various working shifts are there highest reported delays and whether season has any impact on the cause of delays. By examining these results, we hope to be able to allocate improved resources to address the various reported incidents for delays. To address the issue of delays during peak hours, a potential solution might be to employ additional streetcars that run during these hours and by investing more resources in the night shift streetcars the workload and reduce long delays during late hours like 2-4 AM as these hours are usually dangerous to be out especially alone.
 
-# Limitations
+# Limitations {#limitations}
 
-Despite being able to extract several key insights as mentioned in the [discussion] section, our study does have certain limitations that need to be addressed as part of next steps.
+Despite being able to make various conclusions as mentioned in the [discussion](#discussion) section, our study does have certain limitations that need to be addressed as part of next steps.
 
 One of the key limitation is due to the consequence of our dataset. It is important to highlight that the results and inferences made part of this study are for the year 2023 and cannot be generalized to the overall trend in delay patterns that we may observe. The results from @fig-delay-by-season is one such example as the result will likely have strong correlation to the observed weather data for the specific year. During the year 2023, Toronto reported a unusually warmer time resulting in less frequent and intense snowfall thus not negatively impacting streetcar track or traffic significantly. It is important to note that in order to make stronger inferences from our data, we need to extend our dataset to account for past year's of TTC delay data collected from OpenData Toronto.
 
