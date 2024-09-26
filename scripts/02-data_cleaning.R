@@ -14,6 +14,9 @@ set.seed(20136)
 #### Clean data ####
 raw_data <- read_csv("data/raw_data/unedited_ttc_streetcar_delay_2023.csv")
 
+# Report total number of missing values -- referenced in paper.pdf dataset description
+length(which(is.na(raw_data)))
+
 cleaned_data <-
   raw_data |>
   janitor::clean_names() |> 
@@ -21,7 +24,7 @@ cleaned_data <-
            into = c("year", "month"),
            sep = "-") |>
   separate(col = time,
-           into = c("hour", "minute"),
+           into = c("hour"),
            sep = ":") |>
   mutate(season = case_when(
     month %in% c("03", "04", "05") ~ "Spring",  # March, April, May
@@ -31,13 +34,13 @@ cleaned_data <-
   )) |>
   drop_na() |>  # Ensure drop_na() is applied to the cleaned_data
   filter(min_delay != 0) |>
-  filter(min_gap != 0) |>
-  select(year, month, hour, minute, incident, min_delay, line, season)
+  select(year, month, hour, incident, min_delay, line, season)
 
+nrow(cleaned_data)
 # Since the delay time for some dates are over many hours, we will restrict
 # ourselves to at most 2 hour delays in our study
 cleaned_data <- cleaned_data |> filter(min_delay < 121)
-
+nrow(cleaned_data)
 # Check if any column contains NA data or not
 any(is.na(cleaned_data))
 

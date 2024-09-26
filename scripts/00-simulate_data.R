@@ -49,7 +49,7 @@ data <-
 
 
 #### Write_csv
-write_csv(data, file = "data/raw_data/simulated_streetcar_delay.csv")
+write_csv(data, file = "data/simulated_data/simulated_streetcar_delay.csv")
 
 
 

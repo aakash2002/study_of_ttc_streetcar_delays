@@ -13,7 +13,7 @@ library(tidyverse)
 set.seed(20136)
 
 #### Test data ####
-data <- read_csv("data/raw_data/simulated_streetcar_delay.csv")
+data <- read_csv("data/simulated_data/simulated_streetcar_delay.csv")
 
 # Test for negative numbers in delay_mins column
 data$delay_mins |> min() <= 0
