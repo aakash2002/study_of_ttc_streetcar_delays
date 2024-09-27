@@ -32,15 +32,23 @@ cleaned_data <-
     month %in% c("09", "10", "11") ~ "Fall",     # September, October, November
     month %in% c("12", "01", "02") ~ "Winter"    # December, January, February
   )) |>
-  drop_na() |>  # Ensure drop_na() is applied to the cleaned_data
+  drop_na() |>
   filter(min_delay != 0) |>
   select(year, month, hour, incident, min_delay, line, season)
 
+# Ensure that the numbers are converted to numeric from character (if that's the case)
+cleaned_data$hour <- as.numeric(cleaned_data$hour)
+cleaned_data$month <- as.numeric(cleaned_data$month)
+cleaned_data$year <- as.numeric(cleaned_data$year)
+cleaned_data$min_delay <- as.numeric(cleaned_data$min_delay)
+cleaned_data$line <- as.numeric(cleaned_data$line)
+
 nrow(cleaned_data)
 # Since the delay time for some dates are over many hours, we will restrict
-# ourselves to at most 2 hour delays in our study
+# ourselves to at most 2 hour delays in our study -- discussed in assumption section of the paper
 cleaned_data <- cleaned_data |> filter(min_delay < 121)
 nrow(cleaned_data)
+
 # Check if any column contains NA data or not
 any(is.na(cleaned_data))
 
