@@ -57,7 +57,7 @@ The remainder of this paper is structured as follows. We first give a brief over
 # Dataset Description {#datasetdesc}
 
 ## Overview of dataset
-The following data was made available from OpenData Toronto (@opendatatoronto) for the year 2023. The data was extracted from the server and saved locally using in a raw data folder using the instructions provided by the documentation. We note that this was the only available dataset with frequent updates and data dating back to 2014. Some of the features part of this dataset are date, time, incident, min delay, bound and location.
+The following data was made available from OpenData Toronto (@opendatatoronto) for the year 2023. The data was extracted from the server and saved locally in a raw data folder using the instructions provided by the documentation. We note that this was the only available dataset with frequent updates and data dating back to 2014. Some of the features part of this dataset are date, time, incident, min delay, bound and location.
 
 ## Assumption made in dataset {#assumption}
 We observe that our dataset has several rows where the minimum delay time is over 900 minutes or are equal to 0. These values can heavily skew the results that we may observe. Therefore, one key assumption we make in our study is that we are only interested in at most a delay by 2 hours in streetcars. Therefore, during the data cleaning step, we will limit the rows of data to 120 minutes. As a result of this filtering, we only lose about 130 data and still retain about 10723 data entries to use in our study.
@@ -147,7 +147,7 @@ The data is collected and maintained by TTC and is updated monthly as reported b
 
 The dataset was last updated September 24, 2024 ensuring consistent updates to the collected data. OpenData Toronto also provides functionality and sufficient instructions for developers to easily query their data using scripts in Python (@python), R (@citeR) and Node.js (@nodeJS) instead of having to manually download them.
 
-The website doesn't provided information on how the data was sourced but we can assume that the data is recorded by taking the difference in the reported arrival time via the TTC app and the actual time the streetcar arrives at various stops. The collected data represents common types like characters, numeric and datetime. Therefore, for the purposes of this study, the procedures used to collect the data and their types are appropriate for our use and we do not require any extra information to make any assumptions them.
+The website doesn't provided information on how the data was sourced but we can assume that the data is recorded by taking the difference in the reported arrival time via the TTC app and the actual time the streetcar arrives at various stops. The collected data represents common types like characters, numeric and datetime. Therefore, for the purposes of this study, the procedures used to collect the data and their types are appropriate for our use and we do not require any extra information to make any assumptions about them.
 
 @tbl-selected-features describes the data types for the selected features in our study from the cleaned dataset.
 
