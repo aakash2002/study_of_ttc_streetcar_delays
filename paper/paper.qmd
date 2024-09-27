@@ -60,18 +60,16 @@ The following data was made available from OpenData Toronto (@opendatatoronto) f
 ## Assumption made in dataset {#assumption}
 We observe that our dataset has several rows where the minimum delay time is over 900 minutes or are equal to 0. These values can heavily skew the results that we may observe. Therefore, one key assumption we make in our study is that we limit the maximum delay time to upto 2 hours or 120 minutes. As a result of this filtering, we only lose about 130 data and still retain about 10723 data entries to use in our study.
 
+\newpage
 ## Data preprocessing and cleaning
-The raw data is undergone a series of data cleaning steps to ensure adequate usability for the study. We first use the Janitor (@janitor) package to clean the data columns removing any spaces between them and using a consistent naming stype for them. Next, we proceed to split the date field into year and month fields and split the time field extracting the hour of day from it. Following this, we create a new column to denote the season based on the month of the year from the data. This helps during the analysis stage when we need to make inferences about the seasonal variation in average delays in streetcars. 
-
-We then proceed to drop the rows with missing values or NA. Out of the total 14413 rows of data, 2399 of them contain NA values in total which doesn't heavily impact our data. Therefore, no transformations are necessary to populate missing entries in our dataset. Lastly, as highlighed in the [assumption](#assumption) section, we filter our dataset to only include delays of upto 120 minutes.
-
-As a result of the above described data cleaning process, we select our desired features from the dataset. The following table shows the first five rows of our data and the selected features.
 
 ```{r}
 #| include: true
 #| warning: false
 #| message: false
 #| echo: false
+#| label: tbl-dataset-preview
+#| tbl-cap: "First first five rows in the cleaned dataset with selected features"
 
 # Create a table highlighting the first five rows and the selected features in the data
 limited_row_data <- data |> head(5)
@@ -93,24 +91,25 @@ table_features |>
     style = cell_fill(color = 'grey90'),
     locations = cells_body(rows = seq(1, nrow(limited_row_data), 2))
   )
-cat("Table 1: First first five rows in the cleaned dataset with selected features")
   
 ```
 
+The raw data is undergone a series of data cleaning steps to ensure adequate usability for the study. We first use the Janitor (@janitor) package to clean the data columns removing any spaces between them and using a consistent naming stype for them. Next, we proceed to split the date field into year and month fields and split the time field extracting the hour of day from it. Following this, we create a new column to denote the season based on the month of the year from the data. This helps during the analysis stage when we need to make inferences about the seasonal variation in average delays in streetcars. 
+
+We then proceed to drop the rows with missing values or NA. Out of the total 14413 rows of data, 2399 of them contain NA values in total which doesn't heavily impact our data. Therefore, no transformations are necessary to populate missing entries in our dataset. Lastly, as highlighed in the [assumption](#assumption) section, we filter our dataset to only include delays of upto 120 minutes.
+
+As a result of the above described data cleaning process, we select our desired features from the dataset. @tbl-dataset-preview shows the first five rows of our data and the selected features.
+
+\newpage
 ## Measurement of units for selected features
 
-The data is collected and maintained by TTC and is updated monthly as reported by the website. Since the data is stored as a CSV, several numerical fields like the streetcar line or delay in minutes are saved as characters instead of numbers. Fields like date are saved as appropriate format of datetime type. 
-
-The dataset was last updated September 24, 2024 ensuring consistent updates to the collected data. OpenData Toronto also provides functionality and sufficient instructions for developers to easily query their data using scripts in Python, R and Node.js instead of having to manually download them.
-
-The website doesn't provided information on how the data was sourced but we can assume that the data is recorded by taking the difference in the reported arrival time via the TTC app and the actual time the streetcar arrives at various stops. The collected data represents common types like characters, numeric and datetime. Therefore, for the purposes of this study, the procedure and type of the data reported is appropriate for our use and we do not require any extra information to make any assumptions about the data types.
-
-The following table describes the data types for the selected features in our study from the cleaned dataset after the necessary transformations.
 ```{r}
 #| include: true
 #| warning: false
 #| message: false
 #| echo: false
+#| label: tbl-selected-features
+#| tbl-cap: "Datatypes for the selected features from the cleaned dataset"
 
 # Get feature names
 features <- colnames(limited_row_data)
@@ -140,9 +139,15 @@ table_feature_datatypes |>
     style = cell_fill(color = 'grey90'),
     locations = cells_body(rows = seq(1, nrow(table), 2))
   )
-  cat("Table 2: Datatypes for the selected features from the cleaned dataset.")
 ```
 
+The data is collected and maintained by TTC and is updated monthly as reported by the website. Since the data is stored as a CSV, several numerical fields like the streetcar line or delay in minutes are saved as characters instead of numbers. Fields like date are saved as appropriate format of datetime type. 
+
+The dataset was last updated September 24, 2024 ensuring consistent updates to the collected data. OpenData Toronto also provides functionality and sufficient instructions for developers to easily query their data using scripts in Python, R and Node.js instead of having to manually download them.
+
+The website doesn't provided information on how the data was sourced but we can assume that the data is recorded by taking the difference in the reported arrival time via the TTC app and the actual time the streetcar arrives at various stops. The collected data represents common types like characters, numeric and datetime. Therefore, for the purposes of this study, the procedure and type of the data reported is appropriate for our use and we do not require any extra information to make any assumptions about the data types.
+
+@tbl-selected-features describes the data types for the selected features in our study from the cleaned dataset after the necessary transformations.
 
 # Results {#results}
 ## Average Delay By Streetcar Line

@@ -13,38 +13,35 @@ library(tidyverse)
 set.seed(20136)
 
 #### Simulate data ####
-# Define the start and end date
-start_date <- as.Date("2023-01-01")
-end_date <- as.Date("2023-12-31")
-
 # Set the number of random dates you want to generate
-number_of_dates <- 100
-from_stations <- c("Finch", "Sheppard Yongue", "Lawrence Station", "Bloor Station")
-to_stations <- c("St George Station", "Union Station", "Queen Station", "Dundas West", "Museum")
+num_rows <- 100
 
 data <-
   tibble(
-    dates = as.Date(
-      runif(
-        n = number_of_dates,
-        min = as.numeric(start_date),
-        max = as.numeric(end_date)
+    year = 2023,
+    month = as.integer(runif(
+      n = num_rows,
+      min = 1,
+      max = 12
+    )),
+    hour = as.integer(runif(
+      n = num_rows,
+      min = 0,
+      max = 23
+    )),
+    delay_mins = as.integer(runif(
+      n = num_rows,
+      min = 1,
+      max = 120
+    )),
+    streetcar_line = sample(
+      c(504, 505, 506, 511, 304, 305, 311, 9000),
+      size = num_rows, replace = TRUE
       ),
-    ),
-    delay_mins = rpois(n = number_of_dates, lambda = 20),
-    day = weekdays(dates),
     reason = sample(
       c("Traffic", "Emergency", "Weather", "Route Change"), 
-      size = number_of_dates, replace = TRUE
-      ),
-    from_station = sample(from_stations, 
-                          size = number_of_dates, 
-                          replace = TRUE
-    ),
-    to_station = sample(to_stations, 
-                        size = number_of_dates, 
-                        replace = TRUE
-    ),
+      size = num_rows, replace = TRUE
+      )
   )
 
 
