@@ -4,7 +4,6 @@
 
 This project aims to study the causes of delays in Toronto Transit Commissions (TTC) streetcar service, the variation in delays by the hours in working shifts and whether there are any seasonal relationships to the observed delays for the year 2023. The findings from the paper can help in better designing policies to improve the commuting experience for the residents of Toronto.
 
-
 ## File Structure
 
 The repo is structured as follows:
@@ -25,6 +24,11 @@ The repo is structured as follows:
   - `scripts/01-download_data.R` contains the R script used to download the dataset from OpenData Toronto and save a CSV version of it.
   - `scripts/02-data_cleaning.R` contains the R script used to perform various data cleaning methods to create the final CSV data used for analysis.
   - `scripts/03-test_data.R` contains the R script used to test our simulated data generated.
+
+
+## How to run this project?
+
+Please open the __ttc_streetcar_delay.Rproj__ file to run the project. It is recommended you have R and RStudio v4.4 installed on your machine. To compile the Quarto document, simply navigate to the document and click __Render__.
 
 
 ## Statement on LLM usage
